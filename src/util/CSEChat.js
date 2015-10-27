@@ -44,7 +44,6 @@ class CSEChat {
     this.jid = this.username + '@' + this.address + '/' + this.resource;
     this.client = null;
     this.eventEmitter = new EventEmitter();
-    this._heartbeat = 0;
     this._reconnect = true;
     this._idCounter = 0;
   }
@@ -94,6 +93,18 @@ class CSEChat {
     .c('body')
     .t(message));
   }
+  
+  
+  joinRoom(roomName){
+	  if (!this.client) return;
+	  this.client.send(new XMPP.Element('presence',{to: room + '/' + this.nick})
+      .c('x', {xmlns: 'http://jabber.org/protocol/muc'})); 
+  }
+  leavRoom(roomName){
+	  if (!this.client) return;
+	  this.client.send(new XMPP.Element('unavailable',{to: room + '/' + this.nick})
+      .c('x', {xmlns: 'http://jabber.org/protocol/muc'})); 
+  }
 
   // alias eventEmitter
   on(event, callback) {
@@ -133,7 +144,6 @@ class CSEChat {
     });
 
     this.client.on('online', () => {
-      this._heartbeat = this._getTime();
       this.eventEmitter.emit('online');
       // send global presence
       this.client.send(new XMPP.Element('presence', {type: 'available'}).c('show').t('chat'));
@@ -144,8 +154,7 @@ class CSEChat {
           .c('x', {xmlns: 'http://jabber.org/protocol/muc'}));
       });
 
-      // start heartbeat
-      this._heartbeatInterval = setInterval(() => this._checkConnection(), 10000);
+     
     }, this);
 
     this.client.on('disconnect', () => {
@@ -158,19 +167,8 @@ class CSEChat {
   }
 
 
-  // Check connection and reconnect if no message in last 5 minutes
-  _checkConnection() {
-    const time = this._getTime();
-    if (time - this._heartbeat > 60) {
-      console.log('no message in 60 seconds reconnecting');
-      this._heartbeat = time;
-      this.disconnect();
-      this.connect();
-    }
-  }
 
   _processStanza(stanza) {
-    this._heartbeat = this._getTime();
 
     // if error?
     if (stanza.attrs.type === 'error') {

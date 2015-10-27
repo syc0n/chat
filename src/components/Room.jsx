@@ -6,6 +6,7 @@
 import React from 'react';
 import Reflux from 'reflux';
 import ChatStore from '../stores/ChatStore';
+import ChatActions from '../actions/ChatActions';
 
 const Room = React.createClass({
   displayName: 'room',
@@ -50,7 +51,22 @@ const Room = React.createClass({
   //   }
   //   return true;
   // },
+  onSendMessageToRoomClick: function() {
+    const message = document.getElementById('roomMessage').value;
 
+   
+    ChatActions.sendMessageToRoom({
+      message: message,
+	  roomName: this.props.roomName,
+    })
+    .then(() => {
+      console.log(success);
+      document.getElementById('roomMessage').value="";
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  },
   render: function() {
     let messageItem = (message) => {
       switch (message.type) {
@@ -80,6 +96,11 @@ const Room = React.createClass({
               <li className='collection-item'>Welcome to {this.props.roomName}!</li>
               {this.state.room ? this.state.room.messages.map(messageItem) : ''}
             </ul>
+            <div className='input-field col s12'>
+              <input id='roomMessage'  type='text' />
+              <label htmlFor='message'>Message</label>
+              <button className="btn-large waves-effect waves-light" type="submit" name="action"  onClick={this.onSendMessageToRoomClick}>SEND</button>
+            </div>
           </div>
           <div className='col s2 chat-area'>
             <ul id='userlog' className={this.state.room ? 'collection' : 'loader'}>

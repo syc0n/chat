@@ -7,7 +7,8 @@ import Reflux from 'reflux';
 
 const ChatActions = Reflux.createActions({
   'connect': {children: ['completed', 'failed']},
-  'connectError': {children: ['completed', 'failed']}
+  'connectError': {children: ['completed', 'failed']},
+  'sendMessageToRoom': {children: ['completed', 'failed']},
 });
 
 export default ChatActions;

@@ -72,6 +72,14 @@ const ChatStore = Reflux.createStore({
       });
       chat.connect();
   },
+  
+  onSendMessageToRoom: function(data) {
+	  if(chat){
+		  chat.sendMessageToRoom(data.message,data.roomName);
+	  }
+  },
+  
+  
 
   onConnectError: function(error) {
     console.log(error);
