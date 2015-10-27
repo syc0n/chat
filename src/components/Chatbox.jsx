@@ -5,6 +5,7 @@
 'use strict';
 import React from 'react';
 import Room from './Room.jsx';
+import config from '../../config';
 
 
 
@@ -26,7 +27,7 @@ var TabContent = React.createClass({
     render: function() {
         return (
           <div className={"tabContent " + this.props.className}> 
-              {this.props.content}
+              <Room roomName={this.props.content}/>
           </div>
       );
     }
@@ -57,8 +58,9 @@ var Tabs = React.createClass({
     
       var headers = [];
       var i = 0;
-      this.props.tabs.forEach(function(tab){
-          headers.push(<TabHeader header={ tab.header } 
+      console.log(this.props);
+      this.props.tabs.forEach(function(room){
+          headers.push(<TabHeader header={ room } 
                              key={"tab"+i}
                              onClick = {this.handleClick.bind(this,i)}
                              className = {this.getHeaderClass(i)} />);
@@ -67,8 +69,8 @@ var Tabs = React.createClass({
       
       var contents = [];
       i=0;
-      this.props.tabs.forEach(function(tab){
-          contents.push(<TabContent content={ tab.content } 
+       this.props.tabs.forEach(function(room){
+          contents.push(<TabContent content={ room } 
                                     key={"content"+i}
                                     className = {this.getContentClass(i)} />);
           i++;
@@ -109,9 +111,7 @@ const Chatbox = React.createClass({
         </div>
         <div className='col s10'>
         <Tabs initialSelected={1} 
-        tabs={[{header:"_global", content:<div><Room roomName='_global'/></div>},
-               {header:"_it", content:<div><Room roomName='_it'/></div>},
-               {header:"_modsquad", content:<div><Room roomName='_modsquad'/></div>} ]} />
+        tabs = {config.rooms} />
         </div>
       </div>
     );
