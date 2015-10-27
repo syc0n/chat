@@ -42,17 +42,11 @@ const Room = React.createClass({
     if (atBottom) this.chatlog.scrollTop = this.chatlog.scrollHeight - this.chatlog.clientHeight;
   },
 
-  // shouldComponentUpdate: function(nextProps, nextState) {
-  //   if (!this.state.room && nextState.room) return true;
-  //   if (!nextState.room ||
-  //     (this.state.room.length == nextState.room.length &&
-  //     this.state.room.users.length == nextState.room.users.length)) {
-  //     return false;
-  //   }
-  //   return true;
-  // },
+
   onSendMessageToRoomClick: function() {
-    const message = document.getElementById('roomMessage').value;
+  //TODO duplicated 
+    var roomMessage = 'roomMessage'+this.props.roomName;
+    const message = document.getElementById(roomMessage).value;
 
    
     ChatActions.sendMessageToRoom({
@@ -87,6 +81,9 @@ const Room = React.createClass({
     let userItem = (user) => {
       return <li className='collection-item truncate hoverable' key={user.id}>{user.senderName}</li>;
     };
+   //TODO duplicated 
+    var roomMessage = 'roomMessage'+this.props.roomName;
+
     return (
       <div className='room'>
 
@@ -97,7 +94,7 @@ const Room = React.createClass({
               {this.state.room ? this.state.room.messages.map(messageItem) : ''}
             </ul>
             <div className='input-field col s12'>
-              <input id='roomMessage'  type='text' />
+              <input id={roomMessage}  type='text' />
               <label htmlFor='message'>Message</label>
               <button className="btn-large waves-effect waves-light" type="submit" name="action"  onClick={this.onSendMessageToRoomClick}>SEND</button>
             </div>
