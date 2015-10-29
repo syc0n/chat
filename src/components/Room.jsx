@@ -43,23 +43,46 @@ const Room = React.createClass({
   },
 
 
-  onSendMessageToRoomClick: function() {
+  onSendMessageClick: function() {
   //TODO duplicated 
     var roomMessage = 'roomMessage'+this.props.roomName;
     const message = document.getElementById(roomMessage).value;
+	
+   	if(message.charAt(0) == '/' && message.charAt(1)=='w'){
+   	var tmp = message.slice(3, message.length);
+   	var n = tmp.indexOf(" ");
+   	var user = tmp.slice(0, n);
+   	var userMessage = tmp.slice(n+1, tmp.length);
+   	console.log(n);
 
-   
+   ChatActions.sendMessageToUser({
+      message: userMessage,
+	  userName: user,
+    })
+    .then(() => {
+      console.log(success);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+   	return;
+   	}
+   	
+   	
     ChatActions.sendMessageToRoom({
       message: message,
 	  roomName: this.props.roomName,
     })
     .then(() => {
       console.log(success);
-      document.getElementById('roomMessage').value="";
     })
     .catch((error) => {
       console.log(error);
     });
+    
+    
+    
+    
   },
   
   onUserMousOver: function(userId) {
@@ -117,7 +140,7 @@ const Room = React.createClass({
             <div className='input-field col s12'>
               <input id={roomMessage}  type='text' />
               <label htmlFor='message'>Message</label>
-              <button className="btn-large waves-effect waves-light" type="submit" name="action"  onClick={this.onSendMessageToRoomClick}>SEND</button>
+              <button className="btn-large waves-effect waves-light" type="submit" name="action"  onClick={this.onSendMessageClick}>SEND</button>
             </div>
           </div>
           <div className='col s2 chat-area'>
