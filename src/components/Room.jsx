@@ -61,6 +61,23 @@ const Room = React.createClass({
       console.log(error);
     });
   },
+  
+  onUserMousOver: function(userId) {
+	console.log(userId);  
+
+  },
+  
+  onUserContextMenu: function(userId) {
+         event.preventDefault()
+        // Do something here....
+        alert('right click');
+    },
+    
+    onUserClick: function(userId) {
+        alert('left click');
+    },
+  
+  
   render: function() {
     let messageItem = (message) => {
       switch (message.type) {
@@ -79,7 +96,11 @@ const Room = React.createClass({
       }
     };
     let userItem = (user) => {
-      return <li className='collection-item truncate hoverable' key={user.id}>{user.senderName}</li>;
+      return  <li key={user.id} id={user.id}  
+      onMouseOver={this.onUserMousOver.bind(this,user.id)}
+      onClick={this.onUserClick.bind(this,user.id)}
+      onContextMenu={this.onUserContextMenu.bind(this,user.id)}
+      className='collection-item truncate hoverable'>{user.senderName} </li>;
     };
    //TODO duplicated 
     var roomMessage = 'roomMessage'+this.props.roomName;
