@@ -6,6 +6,7 @@
 import React from 'react';
 import Room from './Room.jsx';
 import config from '../../config';
+import ChatStore from '../stores/ChatStore';
 
 
 
@@ -96,14 +97,20 @@ var Tabs = React.createClass({
 
 const Chatbox = React.createClass({
   displayName: 'chatbox',
+  rooms: [],
 
   getInitialState: function() {
+  
+
     return {
       userId: ''
     };
   },
 
   render: function() {
+  ChatStore.rooms.forEach((room) => {
+        this.rooms.push(room.roomName);
+      });
     return (
       <div className='row'>
         <div className='col s2'>
@@ -111,7 +118,7 @@ const Chatbox = React.createClass({
         </div>
         <div className='col s10'>
         <Tabs initialSelected={1} 
-        tabs = {config.rooms} />
+        tabs = {this.rooms} />
         </div>
       </div>
     );
