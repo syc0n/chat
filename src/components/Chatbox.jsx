@@ -4,6 +4,7 @@
  */
 'use strict';
 import React from 'react';
+import * as Reflux from 'reflux';
 import Room from './Room.jsx';
 import config from '../../config';
 import ChatStore from '../stores/ChatStore';
@@ -59,7 +60,7 @@ var Tabs = React.createClass({
     
       var headers = [];
       var i = 0;
-      console.log(this.props);
+      
       this.props.tabs.forEach(function(room){
           headers.push(<TabHeader header={ room } 
                              key={"tab"+i}
@@ -98,10 +99,9 @@ var Tabs = React.createClass({
 const Chatbox = React.createClass({
   displayName: 'chatbox',
   rooms: [],
-
+  mixins: [Reflux.connect(ChatStore, "room")
+  ],
   getInitialState: function() {
-  
-
     return {
       userId: ''
     };
@@ -109,7 +109,9 @@ const Chatbox = React.createClass({
 
   render: function() {
   ChatStore.rooms.forEach((room) => {
-        this.rooms.push(room.roomName);
+  		if(this.rooms.indexOf(room.roomName)== -1){
+           this.rooms.push(room.roomName);
+        }
       });
     return (
       <div className='row'>

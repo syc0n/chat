@@ -53,8 +53,7 @@ const Room = React.createClass({
    	var n = tmp.indexOf(" ");
    	var user = tmp.slice(0, n);
    	var userMessage = tmp.slice(n+1, tmp.length);
-   	console.log(n);
-
+  
    ChatActions.sendMessageToUser({
       message: userMessage,
 	  userName: user,
@@ -86,7 +85,7 @@ const Room = React.createClass({
   },
   
   onUserMousOver: function(userId) {
-	console.log(userId);  
+	//console.log(userId);  
 
   },
   

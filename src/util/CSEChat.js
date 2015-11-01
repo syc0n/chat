@@ -249,6 +249,8 @@ class CSEChat {
 	        time: new Date(),
 	        message: message,
 	        roomName: senderName,
+	        sender: senderName,
+	        senderName: senderName,
 	        isCSE: isCSE,
 	      }
 	    } else {
