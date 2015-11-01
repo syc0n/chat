@@ -129,10 +129,9 @@ const ChatStore = Reflux.createStore({
               users: []
             };
             this.rooms.push(r);
-            config.rooms.push(r);
             r.messages[message.id] = new ChatMessage(message);
         }else{
-        	this.room.messages[message.id] = new ChatMessage(message);
+        	room.messages[message.id] = new ChatMessage(message);
         	console.log("room"+JSON.stringify(room));
         }
         console.log(this.rooms);
