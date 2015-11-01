@@ -177,12 +177,13 @@ class CSEChat {
 
     if (stanza.is('message'))
     {
+    	
       switch(stanza.attrs.type) {
         case 'groupchat':
-          this.eventEmitter.emit('groupmessage', this._parseMessage(stanza));
+          this.eventEmitter.emit('groupmessage', this._parseMessageGroup(stanza));
           break;
         case 'chat':
-          this.eventEmitter.emit('message', this._parseMessage(stanza));
+          this.eventEmitter.emit('message', this._parseMessageChat(stanza));
           break;
       }
       return;
@@ -196,7 +197,8 @@ class CSEChat {
     }
   }
 
-  _parseMessage(stanza) {
+  _parseMessageGroup(stanza) {
+	  
     const body = stanza.getChild('body');
     const message = body ? body.getText() : '';
     const cseflags = stanza.getChild('cseflags');
@@ -231,6 +233,38 @@ class CSEChat {
       }
     }
   }
+  
+  _parseMessageChat(stanza) {
+	 
+	    const body = stanza.getChild('body');
+	    const message = body ? body.getText() : '';
+	    const nick = stanza.getChild('nick');
+	    const senderName = nick ? nick.getText() : '';
+	    const cseflags = stanza.getChild('cseflags');
+	    const isCSE = cseflags ? cseflags.attrs.cse : false;
+
+	    if (stanza.attrs.from.indexOf('/') != -1) {
+	      return {
+	        id: this._idCounter++,
+	        time: new Date(),
+	        message: message,
+	        roomName: senderName,
+	        isCSE: isCSE,
+	      }
+	    } else {
+	    	
+	      const sender = stanza.attrs.from;
+	      const senderName = sender.split('@')[0];
+	      return {
+	        id: this._idCounter++,
+	        time: new Date(),
+	        message: message,
+	        sender: sender,
+	        senderName: senderName,
+	        isCSE: isCSE,
+	      }
+	    }
+	  }
 
   _parsePresence(stanza) {
     const x = stanza.getChild('x');
