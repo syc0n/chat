@@ -121,8 +121,8 @@ const ChatStore = Reflux.createStore({
 
     chat.on('message', (message) => {
     	console.log(message);
-    	let room = this.rooms.find((r) => r.roomName === message.roomName);
-        if (!room) {
+    	let chat = this.rooms.find((r) => r.roomName === message.roomName);
+        if (!chat) {
             let r = {
               roomName: message.roomName,
               messages: [],
@@ -131,8 +131,8 @@ const ChatStore = Reflux.createStore({
             this.rooms.push(r);
             r.messages[message.id] = new ChatMessage(message);
         }else{
-        	room.messages[message.id] = new ChatMessage(message);
-        	console.log("room"+JSON.stringify(room));
+        	chat.messages[message.id] = new ChatMessage(message);
+        	console.log("room"+JSON.stringify(chat));
         }
         console.log(this.rooms);
       this._trigger();

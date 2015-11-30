@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 'use strict';
-import XMPP from 'node-xmpp';
+import XMPP from 'node-xmpp-client';
 import request from 'request-promise';
 import Promise from 'bluebird';
 import EventEmitter from 'eventemitter3';
@@ -57,7 +57,7 @@ class CSEChat {
       jid: this.jid,
       password: this.password
     });
-
+    console.log(this.client);
     this._initializeEvents();
     return this.client;
   }
@@ -129,6 +129,7 @@ class CSEChat {
     if (!this.client) throw new Error('No connection to initialize');
 
     this.client.on('error', (error) => {
+    	console.log('error',error);
       switch(error.code) {
         case 'EADDRNOTAVAIL':
         case 'ENOTFOUND':
@@ -144,6 +145,7 @@ class CSEChat {
     });
 
     this.client.on('online', () => {
+    	console.log('online');
       this.eventEmitter.emit('online');
       // send global presence
       this.client.send(new XMPP.Element('presence', {type: 'available'}).c('show').t('chat'));
@@ -158,6 +160,7 @@ class CSEChat {
     }, this);
 
     this.client.on('disconnect', () => {
+    	console.log('disconnect');
       this.client = null;
       this.eventEmitter.emit('disconnect', this._reconnect);
       if (this._reconnect) this.connect();

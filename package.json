@@ -29,7 +29,7 @@
     "eventemitter3": "^1.1.1",
     "materialize-css": "^0.96.1",
     "node-stringprep": "^0.7.2",
-    "node-xmpp": "^1.0.2",
+    "node-xmpp-client": "^3.0.0",
     "react": "^0.13.3",
     "react-router": "^0.13.3",
     "reflux": "^0.2.12",

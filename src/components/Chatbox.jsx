@@ -99,20 +99,33 @@ var Tabs = React.createClass({
 const Chatbox = React.createClass({
   displayName: 'chatbox',
   rooms: [],
-  mixins: [Reflux.connect(ChatStore, "room")
+  mixins: [Reflux.connect(ChatStore, "rooms")
   ],
   getInitialState: function() {
-    return {
-      userId: ''
-    };
+  	ChatStore.rooms.forEach((room) => {
+  		this.rooms.push(room.roomName);
+  	});
   },
 
-  render: function() {
+  
+  shouldComponentUpdate: function(nextProps, nextState){
   ChatStore.rooms.forEach((room) => {
-  		if(this.rooms.indexOf(room.roomName)== -1){
-           this.rooms.push(room.roomName);
-        }
-      });
+		if(this.rooms.indexOf(room.roomName)== -1){
+			console.log("update rooms")
+		return false;
+		}
+	});
+  	return true;
+  },
+  componentWillUpdate: function(nextProps, nextState){
+  	ChatStore.rooms.forEach((room) => {
+  			if(this.rooms.indexOf(room.roomName)== -1){
+  	         	this.rooms.push(room.roomName);
+  	      	}
+ 		});
+  },
+	
+  render: function() {
     return (
       <div className='row'>
         <div className='col s2'>

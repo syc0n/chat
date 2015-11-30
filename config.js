@@ -11,7 +11,7 @@ const config = {
   service: 'conference',
   port: 8222,
   endpoint: '/api/chat',
-  rooms: ['_global','_it','_modsquad'],
+  rooms: ['_modsquad','test1','test2'],
 };
 
 export default config;
